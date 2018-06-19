@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<script src="/__/firebase/4.0.0/firebase-app.js"></script>
+	<script src="/__/firebase/4.0.0/firebase-auth.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/3.1.0/firebase-database.js"></script>
+	<script src="/__/firebase/init.js"></script>
+	<src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/notify/0.4.2/notify.min.js"></script>
+	<link rel="stylesheet" href="/scripts/auto-complete/auto-complete.css">
+	<script>
+			firebase.auth().onAuthStateChanged(function(user) {
+			if (user) {
+			}
+			else {
+				window.location.href = "index.html"
+				console.log("logged out");
+			}
+		});
+	</script>
+	<meta http-equiv="Content-type" content="text/html; charset=utf-8">
+	<script src="/scripts/dhtml/codebase/dhtmlxscheduler.js" type="text/javascript" charset="utf-8"></script>
+	<link rel="stylesheet" href="/scripts/dhtml/codebase/dhtmlxscheduler.css" type="text/css" charset="utf-8">
+	<script src="/scripts/dhtml/codebase/ext/dhtmlxscheduler_recurring.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script> 
+	<script src="/scripts/getData.js"></script>
+	<script src="/scripts/searchResultsB.js"></script>
+	<link href="/scripts/switches/dist/css/bootstrap3/bootstrap-switch.css" rel="stylesheet">
+	<script src="/scripts/switches/dist/js/bootstrap-switch.js"></script>
+	<title>Savvy - Next Generation Calendar</title>
+</head>
+
+	
+<style type="text/css" >
+	html, body{ margin:0px; padding:0px; height:100%; overflow:hidden;}	
+	.menu{ display: block;margin-top: 20px;margin-bottom: 10px;}
+	.exploreNav {
+	    height: 87%;
+	    width: 0;
+	    position: fixed;
+	    z-index: 5;
+	    margin-top: -43px;
+	    right: 0;
+	    background-color: #5bc0de;
+	    border-radius: 10px;
+	    overflow-x: hidden;
+	    transition: 0.5s;
+	}
+
+	table tr {
+		height: 50px;
+	}
+
+	.navbar-collapse.collapse {
+	  display: block!important;
+	}
+
+	.navbar-nav>li, .navbar-nav {
+	  float: left !important;
+	}
+
+	.navbar-nav.navbar-right:last-child {
+	  margin-right: -15px !important;
+	}
+
+	.navbar-right {
+	  float: right!important;
+	}
+
+	.clostbtn {
+		font-size: 25px;
+		margin-right: 15px;
+	}
+
+	@media screen and (max-height: 865px) {
+		.exploreNav {
+			height: 85%;
+		}
+	}
+
+	@media screen and (max-height: 700px) {
+		.exploreNav {
+			height: 80%;
+		}
+	}
+</style>
+
+<body onload="init();">
+	<a class="weatherwidget-io" href="https://forecast7.com/en/33d68n117d83/irvine/?unit=us" data-label_1="IRVINE" data-label_2="WEATHER" data-font="Times New Roman" data-icons="Climacons" data-theme="mountains" >IRVINE WEATHER</a>
+	<script>
+	!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src='https://weatherwidget.io/js/widget.min.js';fjs.parentNode.insertBefore(js,fjs);}}(document,'script','weatherwidget-io-js');
+	</script>
+		<div class="container-fluid">
+		<span class="menu">
+			<button type="button" id="sign-out" class="btn btn-danger pull-left" onclick="signOut();"> Sign Out </button>
+			<button type="button" id="explore" class="btn btn-info pull-right" onclick="openExplore()">
+				<span class="glyphicon glyphicon-menu-hamburger"></span> Explore 
+			</button>
+			<button type="button" id="show_categories" class="btn btn-primary" data-toggle="modal" data-target="#categoriesModal">Show Categories</button>
+			<button type="button" id="userPref" class="btn btn-primary" data-toggle="modal" data-target="#preferencesModal">Preferences</button>
+			<!-- Explore Tab -->
+			<div id="exploreTab" class="exploreNav">
+				<nav class="navbar fixed-top navbar-default">
+				  <div class="container-fluid">
+				    <ul class="nav navbar-nav">
+				      <li id="recommendations" class="active"><a href="#" onclick="openRecommendations()">Recommendations</a></li>
+				      <li id="currentEvents"><a href="#" onclick="openCurrentEvents()">Your Events</a></li>
+				      <li id="allevents"><a href="#" onclick="openAllEvents()">All Events</a></li>
+				    </ul>
+				    <ul class="nav navbar-nav navbar-right">
+				      <li><a href="#" class="clostbtn" onclick="closeExplore()">&times;</a></li>
+				    </ul>
+				  </div>
+				</nav>
+				<div id="scrollNav" class="container-fluid">
+					<!-- Events go here -->
+				</div>
+			</div>
+			<!-- Modal -->
+			<div class="modal fade" id="categoriesModal" tabindex="-1" role="dialog" aria-labelledby="categoriesModal" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+					<div class="modal-content">
+						<div class="modal-header">
+						<h5 class="modal-title" id="Categories">Savvy Event Categories</h5>
+						<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+							<span aria-hidden="true">&times;</span>
+						</button>
+						<button type="button" class="btn btn-primary" id="checkAllCats" onclick="toggleAll();">Toggle All</button>
+						</div>
+						<div class="modal-body" id="mbody">
+							<!--categories go here-->
+						</div>
+						<div class="modal-footer">
+						<button type="button" class="btn btn-primary" onclick="loadUserCategories();">Save changes</button>
+						</div>
+					</div>
+					</div>
+				</div>
+				<!-- Modal -->
+			<div class="modal fade" id="preferencesModal" tabindex="-1" role="dialog" aria-labelledby="preferencesModal" aria-hidden="true">
+				<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-header">
+					<h5 class="modal-title" id="preferences">Preferences</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>					
+				</div>
+					<div class="modal-body" id="prefmodalbody">
+						<!--categories go here-->
+					</div>
+					<div class="modal-footer">
+					<button type="button" class="btn btn-primary" onclick="loadUserCategories();">Save changes</button>
+					</div>
+				</div>
+				</div>
+			</div>
+				<!-- Modal -->
+				<div class="modal fade" id="eventAddedModal" tabindex="-1" role="dialog" aria-labelledby="eventAddedModal" aria-hidden="true">
+						<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Event Added!</h5>
+							</div>
+							<div class="modal-body" id="mbody">
+								<dl class="row">
+										<dt class="col-sm-3">Name: </dt>
+										<dd class="col-sm-9">
+											<small class="text-muted" id="event_name2"></small>
+										</dd>
+										
+										<dt class="col-sm-3">Time: </dt>
+										<dd class="col-sm-9">
+											<small class="text-muted" id="event_start2"></small>
+										</dd>
+								</dl>
+							</div>
+							<div class="modal-footer">
+							<button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
+							</div>
+						</div>
+						</div>
+					</div>
+				<!-- Modal -->
+				<div class="modal fade" id="eventModal" tabindex="-1" role="dialog" aria-labelledby="eventModal" aria-hidden="true">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title" id="currEvent">Add this event to your calendar</h5>
+								<p></p>
+								<button type="button" class="btn btn-primary" id="addEvent" onclick="addCalendarEvent();">Add Event</button>
+							</div>
+							<div class="modal-body" id="eventmbody">
+								<dl class="row">
+										<dt class="col-sm-3">Name: </dt>
+										<dd class="col-sm-9">
+											<small class="text-muted" id="event_name"></small>
+										</dd>
+									  
+										<dt class="col-sm-3">Time: </dt>
+										<dd class="col-sm-9">
+											<small class="text-muted" id="event_start"></small>
+										</dd>
+									  
+										<dt class="col-sm-3">Url: </dt>
+										<dd class="col-sm-9">
+											<small class="text-muted"><a href="" id="event_url" target="_blank"></a></small>
+										</dd>
+									  
+										<dt class="col-sm-3">Description: </dt>
+										<dd class="col-sm-9">
+											<small class="text-muted" id="event_description"></small>
+										</dd>
+									  </dl>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-primary" data-dismiss="modal" aria-label="Close">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			<div class="col-md-6 text-center col-md-auto">		
+					<div class="input-group add-on">
+					   <input type="text" class="form-control" placeholder="Search" id="search">
+					  <span class="input-group-btn">
+						 <button class="btn btn-default" type="submit" id="submit" onclick="grabQueriedEvent();">
+							 <span class="glyphicon glyphicon-search"></span>
+						 </button>
+						</span>
+				 </div>
+			 </div>
+		   </span>
+ </div>
+
+	<div id="scheduler_here" class="dhx_cal_container" style='width:100%; height:75%;'>
+		<div class="dhx_cal_navline">
+			<div class="dhx_cal_prev_button">&nbsp;</div>
+			<div class="dhx_cal_next_button">&nbsp;</div>
+			<div class="dhx_cal_today_button"></div>
+			<div class="dhx_cal_date"></div>
+			<div class="dhx_cal_tab" name="day_tab" style="right:204px;"></div>
+			<div class="dhx_cal_tab" name="week_tab" style="right:140px;"></div>
+			<div class="dhx_cal_tab" name="month_tab" style="right:76px;"></div>
+		</div>
+		<div class="dhx_cal_header">
+		</div>
+		<div class="dhx_cal_data">
+		</div>
+	</div>
+</body>
+
+<script type="text/javascript" charset="utf-8">
+	window.onload(loadData());
+	createCheckBox();
+	loadUserCategories();
+	
+	function signOut() {
+		var user = firebase.auth().currentUser;
+		if (user != null) {
+			firebase.auth().signOut().then(function(error) {
+				window.location.href = "index.html";
+			});	
+		}
+	}
+</script>
+<script src="/scripts/auto-complete/auto-complete.min.js"></script>
+</html>

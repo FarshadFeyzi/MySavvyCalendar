@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Savvy</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <style type="text/css">
+    #contacts p, #contacts p.lead{ margin: 0; }
+    .authenticated{ display: block;margin-top: 20px;margin-bottom: 10px;}
+    .unauthenticated{display: none;}
+    .modal-header:last-child{border-bottom: 0;}
+    #carousel-caption{background-color: black;}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <span class="userAuth authenticated pull-right">
+        <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#registerModal">Register</button>
+        <button type="button" class="btn btn-success" data-toggle="modal" data-target="#loginModal">Login</button>
+    </span>
+    <h1>Savvy: The Next Generation of Calendars</h1>
+    <hr/>
+  
+  <!-- Register Modal -->  
+  <div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="Register" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="registerModalLabel">Register</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">First Name:</label>
+            <input type="text" class="form-control" id="registerFirstName">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Last Name:</label>
+            <input type="text" class="form-control" id="registerLastName">
+          </div>
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Email:</label>
+            <input type="text" class="form-control" id="registerEmail">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">Password:</label>
+            <input type="password" class="form-control" id="registerPassword">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">Confirm Password:</label>
+            <input type="password" class="form-control" id="registerConfirmPassword">
+          </div>
+        </div>
+        <div class="modal-footer">
+            <p id="register_error"></p>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="doRegister">Register</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Login Modal -->
+  <div class="modal fade" id="loginModal" tabindex="-1" role="dialog" aria-labelledby="Login" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+          <h4 class="modal-title" id="loginModalLabel">Login</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="recipient-name" class="control-label">Email:</label>
+            <input type="text" class="form-control" id="loginEmail">
+          </div>
+          <div class="form-group">
+            <label for="message-text" class="control-label">Password:</label>
+            <input type="password" class="form-control" id="loginPassword">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <p id="login_error"></p>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="doLogin">Login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Page Carousel -->
+  <div id="myCarousel" class="carousel slide" data-ride="carousel">
+
+    <ol class="carousel-indicators">
+      <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+      <li data-target="#myCarousel" data-slide-to="1"></li>
+      <li data-target="#myCarousel" data-slide-to="2"></li>
+    </ol>
+
+    <div class="carousel-inner">
+      <div class="item active" style="background-color:black;">
+        <img src="http://newenglandrestrooms.com/wp-content/uploads/2014/07/Fotolia_66660956_Subscription_Monthly_M.jpg" alt="First slide" style="opacity:0.5;">
+        <div class="carousel-caption d-none d-md-block">
+          <h2>Check Events Happening Around You</h2>
+          <p>Explore events happening in your area, and add them to your calendar.</p>
+        </div>
+      </div>
+
+      <div class="carousel item" style="background-color:black;">
+        <img src="http://www.environment.arizona.edu/sites/default/files/S107_2.jpg" alt="Second slide" style="opacity:0.5;">
+        <div class="carousel-caption d-none d-md-block">
+          <h2>Add UCI Courses with Ease</h2>
+          <p>You can add any UCI course to your personal calendar with a simple click.</p>
+        </div>
+      </div>
+    
+      <div class="carousel item" style="background-color:black;">
+        <img src="https://report.az/storage/news/bc4a5bdaa7ab650d89d63f345be2c380/e1716b55-8504-4433-9395-ea94b3d6cef3.jpg" alt="Third slide" style="opacity:0.5;">
+        <div class="carousel-caption d-none d-md-block">
+          <h2>See the Weather in Your Area</h2>
+          <p>Get updates on the weather to determine how it affects you and your events.</p>
+        </div>
+      </div>
+    </div>
+
+    <a class="left carousel-control" href="#myCarousel" data-slide="prev">
+      <span class="glyphicon glyphicon-chevron-left"></span>
+      <span class="sr-only">Previous</span>
+    </a>
+    <a class="right carousel-control" href="#myCarousel" data-slide="next">
+      <span class="glyphicon glyphicon-chevron-right"></span>
+      <span class="sr-only">Next</span>
+    </a>
+  </div>
+
+  <div id="footer">
+      <p style="text-align: center; padding-top: 50px; font-size: 17px;">&copy; 2018 MySavvyCalendar</p>
+  </div>
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+  <script src="/scripts/script.js"></script>
+</body>
+</html>
